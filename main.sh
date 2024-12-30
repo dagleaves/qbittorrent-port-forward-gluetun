@@ -10,6 +10,11 @@ glue_password="${GLUE_PASSWORD:-adminadmin}"
 
 port_number=$(curl --fail --silent --show-error -u $glue_username:$glue_password $glue_addr/v1/openvpn/portforwarded | jq '.port')
 
+if [ ! "$port_number" ]; then
+    echo "Could not get current forwarding port, exiting..."
+    exit 1
+fi
+
 curl --fail --silent --show-error --cookie-jar /tmp/cookies.txt --cookie /tmp/cookies.txt --header "Referer: $qbt_addr" --data "username=$qbt_username" --data "password=$qbt_password" $qbt_addr/api/v2/auth/login 1> /dev/null
 
 listen_port=$(curl --fail --silent --show-error --cookie-jar /tmp/cookies.txt --cookie /tmp/cookies.txt $qbt_addr/api/v2/app/preferences | jq '.listen_port')
