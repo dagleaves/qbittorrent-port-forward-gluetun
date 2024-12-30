@@ -33,20 +33,11 @@ services:
     container_name: qbittorrent-port-forward-gluetun
     restart: unless-stopped
     environment:
-      - QBT_USERNAME=username
+      - QBT_USERNAME=admin
       - QBT_PASSWORD=password
-      - QBT_ADDR=http://192.168.1.100:8080
-      - GLUE_USERNAME=username
+      - QBT_ADDR=http://localhost:8080
+      - GLUE_USERNAME=admin
       - GLUE_PASSWORD=password
-      - GLUE_ADDR=http://192.168.1.100:8000
+      - GLUE_ADDR=http://localhost:8000
+    network_mode: service:gluetun
 ```
-
-## Development
-
-### Build Image
-
-`docker build . -t qbittorrent-port-forwarder`
-
-### Run Container
-
-`docker run --rm -it -e QBT_ADDR=http://192.168.1.100:8080 -v $(pwd)/config:/config qbittorrent-port-forwarder:latest`
