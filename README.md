@@ -11,28 +11,35 @@ A shell script and Docker container for automatically setting qBittorrent's list
 | QBT_USERNAME | `username`                  | `admin`                      | qBittorrent username                                            |
 | QBT_PASSWORD | `password`                  | `adminadmin`                 | qBittorrent password                                            |
 | QBT_ADDR     | `http://192.168.1.100:8080` | `http://localhost:8080`      | HTTP URL for the qBittorrent web UI, with port                  |
-| PORT_FILE    | `/config/my_file.txt`       | `/config/forwarded_port.txt` | Container path to the file containing the forwarded port number |
-
-### Volumes
-
-| Host location   | Container location | Mode | Description                                               |
-|-----------------|--------------------|------|-----------------------------------------------------------|
-| `/my/host/dir/` | `/config`          | `ro` | The directory in which the forwared ports file is located |
+| GLUE_USERNAME| `username`                  | `admin`                      | Username for the gluetun web UI                                 |
+| GLUE_PASSWORD| `password`                  | `adminadmin`                 | Password for the gluetun web UI                                 |
+| GLUE_USERNAME| `http://192.168.1.100:8000` | `http://localhost:8000`      | HTTP URL for the gluetun web UI, with port                      |
 
 ## Context
 
-Made for use with [docker-wireguard-pia](https://github.com/thrnz/docker-wireguard-pia):
+Made for use with [gluetun](https://github.com/qdm12/gluetun):
 
-* Environment variable: `PORT_FORWARDING=1`
-* Environment variable: `PORT_PERSIST=1`
-* Environment variable: `PORT_FILE=/pia/forwarded_port.txt`
-* Volume: `/my/host/dir:/pia:rw`
-
-Or for use with [gluetun](https://github.com/qdm12/gluetun):
-
-* Environment variable: `PRIVATE_INTERNET_ACCESS_VPN_PORT_FORWARDING=on`
-* Environment variable: `PRIVATE_INTERNET_ACCESS_VPN_PORT_FORWARDING_STATUS_FILE=/gluetun/forwarded_port.txt`
-* Volume: `/my/host/dir:/gluetun:rw`
+* PIA Environment variable: `PRIVATE_INTERNET_ACCESS_VPN_PORT_FORWARDING=on`
+* ProtonVPN Environment variables: 
+  - `PORT_FORWARD_ONLY=on`
+  - `VPN_PORT_FORWARDING=on`
+  - `VPN_PORT_FORWARDING_PROVIDER=protonvpn`
+  
+## Docker Compose Example
+```yaml
+services:
+  qbittorrent-port-forward-gluetun:
+    image: dagleaves/qbittorrent-port-forward-gluetun:latest
+    container_name: qbittorrent-port-forward-gluetun
+    restart: unless-stopped
+    environment:
+      - QBT_USERNAME=username
+      - QBT_PASSWORD=password
+      - QBT_ADDR=http://192.168.1.100:8080
+      - GLUE_USERNAME=username
+      - GLUE_PASSWORD=password
+      - GLUE_ADDR=http://192.168.1.100:8000
+```
 
 ## Development
 
