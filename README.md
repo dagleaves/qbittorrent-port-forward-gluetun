@@ -1,6 +1,6 @@
-# qbittorrent-port-forward-file
+# qbittorrent-port-forward-gluetun
 
-A shell script and Docker container for automatically setting qBittorrent's listening port from a text file.
+A shell script and Docker container for automatically setting qBittorrent's listening port from Gluetun's control server.
 
 ## Config
 
