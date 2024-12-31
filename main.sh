@@ -15,6 +15,11 @@ if [ ! "$port_number" ]; then
     exit 1
 fi
 
+if [ "$port_number" = "0" ]; then
+    echo "Port forwarding is unhealthy or not set, exiting..."
+    exit 0
+fi
+
 curl --fail --silent --show-error --cookie-jar /tmp/cookies.txt --cookie /tmp/cookies.txt --header "Referer: $qbt_addr" --data "username=$qbt_username" --data "password=$qbt_password" $qbt_addr/api/v2/auth/login 1> /dev/null
 
 listen_port=$(curl --fail --silent --show-error --cookie-jar /tmp/cookies.txt --cookie /tmp/cookies.txt $qbt_addr/api/v2/app/preferences | jq '.listen_port')
