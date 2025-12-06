@@ -8,7 +8,7 @@ glue_addr="${GLUE_ADDR:-http://localhost:8000}" # ex. http://10.0.1.48:8000
 glue_username="${GLUE_USERNAME:-admin}"
 glue_password="${GLUE_PASSWORD:-adminadmin}"
 
-port_number=$(curl --fail --silent --show-error -u $glue_username:$glue_password $glue_addr/v1/openvpn/portforwarded | jq '.port')
+port_number=$(curl --fail --silent --show-error -u $glue_username:$glue_password $glue_addr/v1/portforward | jq '.port')
 
 if [ ! "$port_number" ]; then
     echo "Could not get current forwarding port, exiting..."
